@@ -1,0 +1,55 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<h1>THỐNG KÊ THÔNG TIN CÁC KHÓA HỌC</h1>
+<h2>Số lượng khóa học: {{course_count}}</h2>
+
+<ul>
+    {% for item in course_stats %}
+    <li><strong>{{item.subject}}</strong> có {{item.lesson_count}} bài học</li>
+    {% endfor %}
+</ul>
+
+<div>
+    <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    window.onload = () => {
+        const labels=[]
+        const values=[]
+
+        {% for item in course_stats %}
+            labels.push("{{item.subject}}")
+            values.push({{item.lesson_count}})
+        {% endfor %}
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Số bài học',
+                    data: values,
+                    borderWidth: 1,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}
