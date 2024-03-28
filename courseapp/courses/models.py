@@ -1,11 +1,12 @@
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import AbstractUser
+from cloudinary.models import CloudinaryField
 from django.db import models
 
 
 # Create your models here.
 class User(AbstractUser):
-    pass
+    avatar = CloudinaryField('avatar', null=True)
 
 
 class BaseModel(models.Model):
@@ -51,3 +52,35 @@ class Tag(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class Comment(BaseModel):
+    content = models.CharField(max_length=255)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
+
+
+class BaseAction(BaseModel):
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+        unique_together = ('lesson', 'user')
+
+
+class Like(BaseAction):
+    liked = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.liked
+
+
+class Rating(BaseAction):
+    rate = models.SmallIntegerField(default=0)
+
+    def __str__(self):
+        return self.rate

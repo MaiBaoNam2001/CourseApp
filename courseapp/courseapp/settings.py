@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'ckeditor',
     'ckeditor_uploader',
-    'debug_toolbar'
+    'debug_toolbar',
+    'rest_framework',
+    'drf_yasg',
+    'oauth2_provider'
 ]
 
 MIDDLEWARE = [
@@ -55,6 +58,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+}
+
+CLIENT_ID = 'X36ir5F1X0iXwBkjIrdo8cbl7AhkL8Ym8MFooXrG'
+CLIENT_SECRET = '54HvpM5VVL0lt4Glh2yZXx9skIMCYhbyAt1OmNZ0NqE4lZS4j8mlmB7QnXUsL6WFHjy90in1jpcxSQ0OlIB19W12HZywVj8EdXBdNHDzVdGnlFjv66LvHOrjOht3BIC3'
 
 INTERNAL_IPS = [
     '127.0.0.1',
@@ -79,6 +91,14 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'courseapp.wsgi.application'
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name="ho-chi-minh-open-university",
+    api_key="815825364597615",
+    api_secret="nNl8r0mCyOLBh76oDoVrlmVPpSQ"
+)
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
