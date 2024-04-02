@@ -28,6 +28,9 @@ class CourseViewSet(viewsets.ViewSet, generics.ListAPIView):
     @action(methods=['GET'], detail=True, url_path='lessons')
     def lessons(self, request, pk):
         lessons = self.get_object().lesson_set.filter(active=True)
+        lesson = request.query_params.get('lesson')
+        if lesson:
+            lessons = lessons.filter(subject__icontains=lesson)
         return Response(serializers.LessonSerializer(lessons, many=True, context={'request': request}).data)
 
 
